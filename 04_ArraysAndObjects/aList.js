@@ -27,21 +27,35 @@ function arrayToList(...numbers) {
     
 }
 
-function listToArray(listObj) {
+function listToArray(list) {
     let newArray = [];
-    let newValue = Object.keys(listObj)[0];
-    console.log(newValue);
-    newArray.push(listObj.newValue);
-    console.log(newArray);
+
+    for(let node = list; node; node = node.rest) {
+        newArray.push(node.value)
+    }
+
+    return newArray;
 }
 
+
+function prepend(element, list) {
+    const listObj = {
+        value: element,
+        rest: list
+    }
+
+    return listObj;
+}
+
+function nth(list, number) {
+    return listToArray(list)[number];
+}
 
 let numbers = [1,2,3];
 let newList = arrayToList(...numbers);
 console.log(newList)
-listToArray(newList);
 
-list = {value: 0, rest: list};
-list = {value: -1, rest: list};
-
-console.log(list);
+console.log(listToArray(newList));
+console.log(prepend(0,newList));
+console.log(nth(newList,0));
+console.log(nth(arrayToList([10, 20, 30]), 1));
