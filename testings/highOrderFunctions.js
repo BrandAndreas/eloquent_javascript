@@ -34,7 +34,9 @@ function noisy(f) {
 
 noisy(Math.min)(3, 2, 1);
 
-// Eine Funktion mit new control flow
+// Eine Funktion die eine Testung hinzugefügt wird
+// Eigentlich sind hier drei Funktionen verschachtelt:
+// Wiederhole(Teste(Logge))
 function unless(test, then) {
     if (!test) then();
 }
@@ -43,4 +45,9 @@ repeat(3, n=> {
     unless(n % 2 == 1, () => {
         console.log(n, "is even");
     })
-})
+});
+
+// Normale forEach-loop
+["A", "B"].forEach(l => {
+    console.log(l);
+});
