@@ -1181,3 +1181,31 @@ function characterCount(script) {
 console.log(SCRIPTS.reduce((a, b) => {
     return characterCount(a) < characterCount(b) ? b : a;
 }));
+
+
+// Combining higher order functions
+function average(array) {
+  return array.reduce((a,b) => a + b) / array.length;
+}
+
+console.log(Math.round(average(
+  SCRIPTS.filter(s => s.living).map(s => s.year)
+)));
+console.log(Math.round(average(
+  SCRIPTS.filter(s => !s.living).map(s => s.year)
+)));
+
+
+// Higher-Order function some
+function characterScript(code) {
+  for (let script of SCRIPTS) {
+    if (script.ranges.some(([from, to]) => {
+      return code >= from && code < to;
+    })) {
+      return script;
+    }
+  }
+  return null;
+}
+
+console.log(characterScript(121));
