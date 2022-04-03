@@ -10,7 +10,7 @@
   
 
 function every(array, test) {
-    return array.map(test).some( x => !x);
+    return !array.map(test).some( x => !x);
 }
   console.log(every([1, 3, 5], n => n < 10));
   // → true
