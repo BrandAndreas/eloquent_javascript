@@ -91,6 +91,7 @@ blackRabbit.speak("Black Power!!!")
 
 // --------------------------------------------------------
 // ------------Create a class as an expression-------------
+// ----------still don't know what for---------------------
 // --------------------------------------------------------
 
 let object = new class { getWord() { return "hello";}};
@@ -100,3 +101,37 @@ let otherObject = { getWord() { return "hello";}};
 console.log(otherObject.getWord());
 
 console.log(Object.getPrototypeOf(object));
+
+
+// --------------------------------------------------------
+// ------------Overriding properties-----------------------
+// --------------------------------------------------------
+
+Rabbit.prototype.teeth = "small";
+console.log(murderRabbit.teeth);
+murderRabbit.teeth = "long, sharp and bloody";
+console.log(murderRabbit.teeth);
+console.log(blackRabbit.teeth);
+console.log(Rabbit.prototype.teeth);
+
+
+// --------------------------------------------------------
+// ---------------------------Map--------------------------
+// --------------------------------------------------------
+
+let ages = new Map();
+ages.set("Boris", 39);
+ages.set("Liang", 22);
+ages.set("Julia", 62);
+ages.set("Andreas", 42);
+ages.set("Andreas", 45);
+
+console.log(`Julia is ${ages.get("Julia")}`);
+console.log("Is Jack's age known?", ages.has("Jack"));
+console.log(ages.has("toString"));
+
+console.log(ages.size);
+
+for (const [person, age] of ages) {
+    console.log(`${person} is ${age} years old.`);
+}
