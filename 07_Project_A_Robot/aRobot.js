@@ -3,7 +3,7 @@ const roads = [
     "Alice's House-Post Office", "Bob's House-Town Hall",
     "Daria's House-Ernie's House", "Daria's House-Town Hall",
     "Ernie's House-Grete's House", "Grete's House-Farm",
-    "Grete's House Shop", "Marketplace-Farm",
+    "Grete's House-Shop", "Marketplace-Farm",
     "Marketplace-Post Office", "Marketplace-Shop",
     "Marketplace-Town Hall", "Shop-Town Hall"
 ];
@@ -35,38 +35,35 @@ class VillageState {
     }
 
     move(destination) {
-        if (!roadGraph[this.place].includes(destination)) {
+        if (!roadGraph[this.place].includes(destination)) { //Wenn die destination nicht erreicht werden kann, dann gib genau das gleiche Objekt "Villiage State" wieder zurück
             return this;
         } else {
             let parcels = this.parcels.map(p => {
-                if (p.place != this.place) return p;
-                return {place: destination, address: p.address};
-            }).filter(p => p.place != p.address);
-            return new VillageState(destination, parcels);
+                if (p.place != this.place) return p; // Wenn das Paket nicht gleich des Startortes ist, dann gib das Paket zurück. Also {place: ..., address: ...}
+                return {place: destination, address: p.address}; // Ansonsten bekommt das Paket den Place der destination und die Zieladresse bleibt gleich -> Das bedeutet, dass die Pakete aufgenommen werden, wenn sie sich am Startort befinden
+            }).filter(p => p.place != p.address); // Hier werden die Pakete herausgefiltert, die an der Zieladresse angekommen sind
+            return new VillageState(destination, parcels); // Gebe ein VillageState-Objekt zurück, mit dem Startpunkt = destination und den neu gefilterten Paketen.
         }
     }
 }
 
 let first = new VillageState(
     "Post Office",
-    [{place: "Post Office", address: "Alice's House"}]
+    [{place: "Post Office", address: "Alice's House"}, {place: "Post Office", address: "Bob's House"}]
 );
 let next = first.move("Alice's House");
-
-console.log(next.place);
-console.log(next.parcels);
-console.log('next: ', next);
+console.log("next: ", next);
 console.log(first.place);
 
-function runRobot(state, robot, memory) {
+function runRobot(state, robot, memory) { // state = VillageState-Objekt, robot = Funktion die ein neues Ziel erzeugt und der memory
     for (let turn = 0;; turn++) {
-        if (state.parcels.length == 0) {
-            console.log(`Done in ${turn} turns`);
-            break;
+        if (state.parcels.length == 0) { // Wenn keine Pakete mehr vorhanden sind
+            console.log(`Done in ${turn} turns`); // Gib die Meldung raus in wievielen Turns das geschehen ist
+            break; // Und danach beende die Funktion
         }
-        let action = robot(state, memory);
-        state = state.move(action.direction);
-        memory = action.memory;
+        let action = robot(state, memory); 
+        state = state.move(action.direction); // Das Village-Objekt wird mit dem Ziel des Roboters weiterbewegt
+        memory = action.memory; // der letzte Roboter wird im Memory gespeichert
         console.log(`Moved to ${action.direction}`);
     }
 }
@@ -80,7 +77,7 @@ function randomRobot(state) {
     return {direction: randomPick(roadGraph[state.place])};
 }
 
-VillageState.random = function(parcelCount = 5) {
+VillageState.random = function(parcelCount = 5) { // Erzeugt 5 Pakete mit zufälligen places und addresses und der Startort ist 'Post Office'.
     let parcels = [];
     for (let i = 0; i < parcelCount; i++) {
         let address = randomPick(Object.keys(roadGraph));
@@ -94,5 +91,6 @@ VillageState.random = function(parcelCount = 5) {
     }
     return new VillageState('Post Office', parcels);
 };
+
 
 runRobot(VillageState.random(), randomRobot);
