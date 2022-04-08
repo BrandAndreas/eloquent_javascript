@@ -1,12 +1,12 @@
 const roads = [
-    "Alice's House-Bob's House", "Alice's House-Cabin",
-    "Alice's House-Post Office", "Bob's House-Town Hall",
+    "Alice's House-Bob's House",   "Alice's House-Cabin",
+    "Alice's House-Post Office",   "Bob's House-Town Hall",
     "Daria's House-Ernie's House", "Daria's House-Town Hall",
     "Ernie's House-Grete's House", "Grete's House-Farm",
-    "Grete's House-Shop", "Marketplace-Farm",
-    "Marketplace-Post Office", "Marketplace-Shop",
-    "Marketplace-Town Hall", "Shop-Town Hall"
-];
+    "Grete's House-Shop",          "Marketplace-Farm",
+    "Marketplace-Post Office",     "Marketplace-Shop",
+    "Marketplace-Town Hall",       "Shop-Town Hall"
+  ];
 
 function buildGraph(edges) {
     let graph = Object.create(null);
@@ -55,6 +55,8 @@ let next = first.move("Alice's House");
 console.log("next: ", next);
 console.log(first.place);
 
+
+
 function runRobot(state, robot, memory) { // state = VillageState-Objekt, robot = Funktion die ein neues Ziel erzeugt und der memory
     for (let turn = 0;; turn++) {
         if (state.parcels.length == 0) { // Wenn keine Pakete mehr vorhanden sind
@@ -81,11 +83,9 @@ VillageState.random = function(parcelCount = 5) { // Erzeugt 5 Pakete mit zufäl
     let parcels = [];
     for (let i = 0; i < parcelCount; i++) {
         let address = randomPick(Object.keys(roadGraph));
-        console.log('address: ', address);
         let place;
         do {
             place = randomPick(Object.keys(roadGraph));
-            console.log('place: ', place);
         } while (place == address);
         parcels.push({place, address});
     }
@@ -100,7 +100,7 @@ const mailRoute = [
     "Town Hall", "Daria's House", "Ernie's House",
     "Grete's House", "Shop", "Grete's House", "Farm",
     "Marketplace", "Post Office"
-];
+  ];
 
 function routeRobot(state, memory) {
     if (memory.length == 0) {
@@ -136,4 +136,4 @@ function goalOrientedRobot({place, parcels}, route) {
     return {direction: route[0], memory: route.slice(1)};
 }
 
-runRobot(VillageState.random(), goalOrientedRobot, mailRoute);
+runRobot(VillageState.random(), goalOrientedRobot, route);
