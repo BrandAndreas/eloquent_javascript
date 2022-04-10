@@ -116,6 +116,7 @@ var roads = [
         route = findRoute(roadGraph, place, parcel.address);
       }
     }
+    console.log('route: ', route);
     return {direction: route[0], memory: route.slice(1)};
   }
 

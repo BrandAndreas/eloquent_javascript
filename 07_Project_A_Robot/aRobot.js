@@ -26,7 +26,7 @@ function buildGraph(edges) {
 
 const roadGraph = buildGraph(roads);
 
-console.log('roadGraph: ', roadGraph);
+// console.log('roadGraph: ', roadGraph);
 
 class VillageState {
     constructor(place, parcels) {
@@ -52,8 +52,8 @@ let first = new VillageState(
     [{place: "Post Office", address: "Alice's House"}, {place: "Post Office", address: "Bob's House"}]
 );
 let next = first.move("Alice's House");
-console.log("next: ", next);
-console.log(first.place);
+// console.log("next: ", next);
+// console.log(first.place);
 
 
 
@@ -93,7 +93,7 @@ VillageState.random = function(parcelCount = 5) { // Erzeugt 5 Pakete mit zufäl
 };
 
 
-runRobot(VillageState.random(), randomRobot);
+// runRobot(VillageState.random(), randomRobot);
 
 const mailRoute = [
     "Alice's House", "Cabin", "Alice's House", "Bob's House",
@@ -109,7 +109,7 @@ function routeRobot(state, memory) {
     return {direction: memory[0], memory: memory.slice(1)};
 };
 
-runRobot(VillageState.random(), routeRobot, mailRoute);
+// runRobot(VillageState.random(), routeRobot, mailRoute);
 
 function findRoute(graph, from, to) {
     let work = [{at: from, route: []}];
@@ -125,6 +125,7 @@ function findRoute(graph, from, to) {
 }
 
 function goalOrientedRobot({place, parcels}, route) {
+    console.log('parcels: ', parcels);
     if (route.length == 0) {
         let parcel = parcels[0];
         if (parcel.place != place) {
@@ -133,7 +134,9 @@ function goalOrientedRobot({place, parcels}, route) {
             route = findRoute(roadGraph, place, parcel.adress);
         }
     }
+    console.log('route: ',route);
     return {direction: route[0], memory: route.slice(1)};
 }
 
-runRobot(VillageState.random(), goalOrientedRobot, route);
+runRobot(VillageState.random(),
+goalOrientedRobot, []);
