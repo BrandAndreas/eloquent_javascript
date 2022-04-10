@@ -108,6 +108,7 @@ var roads = [
   }
   
   function goalOrientedRobot({place, parcels}, route) {
+    console.log('parcels: ', parcels);
     if (route.length == 0) {
       let parcel = parcels[0];
       if (parcel.place != place) {

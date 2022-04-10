@@ -28,7 +28,7 @@ const roadGraph = buildGraph(roads);
 
 // console.log('roadGraph: ', roadGraph);
 
-class VillageState {
+var VillageState = class VillageState {
     constructor(place, parcels) {
         this.place = place;
         this.parcels = parcels;
@@ -131,7 +131,7 @@ function goalOrientedRobot({place, parcels}, route) {
         if (parcel.place != place) {
             route = findRoute(roadGraph, place, parcel.place);
         } else {
-            route = findRoute(roadGraph, place, parcel.adress);
+            route = findRoute(roadGraph, place, parcel.address);
         }
     }
     console.log('route: ',route);
