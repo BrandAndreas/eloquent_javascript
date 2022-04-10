@@ -111,31 +111,29 @@ function routeRobot(state, memory) {
 
 // runRobot(VillageState.random(), routeRobot, mailRoute);
 
-function findRoute(graph, from, to) {
-    let work = [{at: from, route: []}];
-    for (let i = 0; i < work.length; i++) {
-        let {at, route} = work[i];
-        for (let place of graph[at]) {
-            if (place == to) return route.concat(place);
-            if (!work.some(w => w.at == place)) {
+function findRoute(graph, from, to) { // Wird gefüttert mit dem roadGraph, dem Startort und dem Zielort
+    let work = [{at: from, route: []}]; // Startarray mit einem Eintrag. Startpunkt und leere Route
+    for (let i = 0; i < work.length; i++) { // Beginne ein Schleife, die solange läuft bis der Zielort gefunden ist
+        let {at, route} = work[i]; // at und route wird aus dem aktuellen Objekt aus dem Array gezogen
+        for (let place of graph[at]) { // Schleife durch alle Nachbarn vom aktuellen at
+            if (place == to) return route.concat(place); // Wenn ein Nachbar dem Zielort entspricht, dann gib die Route zurück
+            if (!work.some(w => w.at == place)) { // Wenn keiner der Nachbarn dem Zielort entpricht, dann erweiter das Array um den aktuellen Place als at
                 work.push({at: place, route: route.concat(place)});
             }
         }
     }
 }
 
-function goalOrientedRobot({place, parcels}, route) {
-    console.log('parcels: ', parcels);
-    if (route.length == 0) {
-        let parcel = parcels[0];
-        if (parcel.place != place) {
-            route = findRoute(roadGraph, place, parcel.place);
+function goalOrientedRobot({place, parcels}, route) { // Wird gefüttert mit dem aktuellen Ort, den Paketen und der Route, die aber als leere Array angegeben werden muss.
+    if (route.length == 0) { //Wenn das Array leer ist
+        let parcel = parcels[0]; // Ist das aktuelle Paket = Paket Nummer 1
+        if (parcel.place != place) { // Wenn das Paket sich nicht vor Ort befindet...
+            route = findRoute(roadGraph, place, parcel.place); // ... finde die schnellste Route dahin
         } else {
-            route = findRoute(roadGraph, place, parcel.address);
+            route = findRoute(roadGraph, place, parcel.address); // Wenn doch, dann finde die schnellste Route zur Zieladresse des Paketes.
         }
     }
-    console.log('route: ',route);
-    return {direction: route[0], memory: route.slice(1)};
+    return {direction: route[0], memory: route.slice(1)}; // Zurückgeben: Die Direction, für die nächste Bewegung und als memory den Rest der Route, der dann als Roboter wieder als route eingetragen wird. --> Dadurch wird die Route schrittweise durchgefüht, weil die anderen Schleifen übersprungen werden.
 }
 
 runRobot(VillageState.random(),
