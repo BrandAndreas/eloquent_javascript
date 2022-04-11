@@ -61,13 +61,14 @@ function runRobot(state, robot, memory) { // state = VillageState-Objekt, robot 
     for (let turn = 0;; turn++) {
         if (state.parcels.length == 0) { // Wenn keine Pakete mehr vorhanden sind
             console.log(`Done in ${turn} turns`); // Gib die Meldung raus in wievielen Turns das geschehen ist
-            break; // Und danach beende die Funktion
+            return turn; // Und danach beende die Funktion
         }
         let action = robot(state, memory); 
         state = state.move(action.direction); // Das Village-Objekt wird mit dem Ziel des Roboters weiterbewegt
         memory = action.memory; // der letzte Roboter wird im Memory gespeichert
         console.log(`Moved to ${action.direction}`);
     }
+    
 }
 
 function randomPick(array) {
@@ -109,7 +110,7 @@ function routeRobot(state, memory) {
     return {direction: memory[0], memory: memory.slice(1)};
 };
 
-// runRobot(VillageState.random(), routeRobot, mailRoute);
+// console.log(runRobot(VillageState.random(), routeRobot, []));
 
 function findRoute(graph, from, to) { // Wird gefüttert mit dem roadGraph, dem Startort und dem Zielort
     let work = [{at: from, route: []}]; // Startarray mit einem Eintrag. Startpunkt und leere Route
@@ -136,5 +137,25 @@ function goalOrientedRobot({place, parcels}, route) { // Wird gefüttert mit dem
     return {direction: route[0], memory: route.slice(1)}; // Zurückgeben: Die Direction, für die nächste Bewegung und als memory den Rest der Route, der dann als Roboter wieder als route eingetragen wird. --> Dadurch wird die Route schrittweise durchgefüht, weil die anderen Schleifen übersprungen werden.
 }
 
-runRobot(VillageState.random(),
-goalOrientedRobot, []);
+// runRobot(VillageState.random(),
+// goalOrientedRobot, []);
+
+
+
+function compareRobots(robot1, memory1, robot2, memory2) {
+    // Your code here
+    // Der turn in runRobot muss irgendwie angezapft werden
+    // runRobot(VillageState.random(), routeRobot, mailRoute);
+    // runRobot(VillageState.random(), goalOrientedRobot, []);
+    const taskRounds = 100;
+    let stepsRobot1 = 0;
+    let stepsRobot2 = 0;
+    for (let round = 0; round < taskRounds; round++) {
+      const parcels = VillageState.random();
+      stepsRobot1 += runRobot(parcels, robot1, memory1);
+      stepsRobot2 += runRobot(parcels, robot2, memory2);
+    }
+    console.log(`Robot 1 needs ${stepsRobot1/taskRounds} steps in average. \rRobot 2 needs ${stepsRobot2/taskRounds} steps in average.`);
+  }
+  
+  compareRobots(routeRobot, [], goalOrientedRobot, []);
