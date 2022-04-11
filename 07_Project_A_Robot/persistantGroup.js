@@ -29,6 +29,8 @@ class PGroup {
       }
 }
 
+PGroup.empty = new PGroup([]);
+
 // let a = PGroup.empty;
 // console.log(a);
 let a = PGroup.empty.add("a");
