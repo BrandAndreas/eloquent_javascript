@@ -60,13 +60,13 @@ let next = first.move("Alice's House");
 function runRobot(state, robot, memory) { // state = VillageState-Objekt, robot = Funktion die ein neues Ziel erzeugt und der memory
     for (let turn = 0;; turn++) {
         if (state.parcels.length == 0) { // Wenn keine Pakete mehr vorhanden sind
-            console.log(`Done in ${turn} turns`); // Gib die Meldung raus in wievielen Turns das geschehen ist
+            // console.log(`Done in ${turn} turns`); // Gib die Meldung raus in wievielen Turns das geschehen ist
             return turn; // Und danach beende die Funktion
         }
         let action = robot(state, memory); 
         state = state.move(action.direction); // Das Village-Objekt wird mit dem Ziel des Roboters weiterbewegt
         memory = action.memory; // der letzte Roboter wird im Memory gespeichert
-        console.log(`Moved to ${action.direction}`);
+        // console.log(`Moved to ${action.direction}`);
     }
     
 }
@@ -158,4 +158,64 @@ function compareRobots(robot1, memory1, robot2, memory2) {
     console.log(`Robot 1 needs ${stepsRobot1/taskRounds} steps in average. \rRobot 2 needs ${stepsRobot2/taskRounds} steps in average.`);
   }
   
-  compareRobots(routeRobot, [], goalOrientedRobot, []);
+//   compareRobots(routeRobot, [], goalOrientedRobot, []);
+
+// console.log(VillageState.random());
+
+
+function yourRobot({place, parcels}, route) { // Wird gefüttert mit dem aktuellen Ort, den Paketen und der Route, die aber als leere Array angegeben werden muss.
+    
+    function getDistance(searchParcel) {
+        if (searchParcel.place != place) {
+            return findRoute(roadGraph, place, searchParcel.place).length;
+        } else {
+            return findRoute(roadGraph, place, searchParcel.address).length;
+        }
+    }
+    
+    let parcel = parcels.reduce((a, b) => {
+        return getDistance(a) < getDistance(b) ? a : b;
+    });
+
+
+    
+    if (route.length == 0) { //Wenn das Array leer ist
+        //let parcel = parcels[0]; // Ist das aktuelle Paket = Paket Nummer 1
+        if (parcel.place != place) { // Wenn das Paket sich nicht vor Ort befindet...
+            route = findRoute(roadGraph, place, parcel.place); // ... finde die schnellste Route dahin
+        } else {
+            route = findRoute(roadGraph, place, parcel.address); // Wenn doch, dann finde die schnellste Route zur Zieladresse des Paketes.
+        }
+    }
+    return {direction: route[0], memory: route.slice(1)}; // Zurückgeben: Die Direction, für die nächste Bewegung und als memory den Rest der Route, der dann als Roboter wieder als route eingetragen wird. --> Dadurch wird die Route schrittweise durchgefüht, weil die anderen Schleifen übersprungen werden.
+}
+
+// runRobot(VillageState.random(), yourRobot, []);
+
+
+function lazyRobot({place, parcels}, route) {
+    if (route.length == 0) {
+      // Describe a route for every parcel
+      let routes = parcels.map(parcel => {
+        if (parcel.place != place) {
+          return {route: findRoute(roadGraph, place, parcel.place),
+                  pickUp: true};
+        } else {
+          return {route: findRoute(roadGraph, place, parcel.address),
+                  pickUp: false};
+        }
+      });
+  
+      // This determines the precedence a route gets when choosing.
+      // Route length counts negatively, routes that pick up a package
+      // get a small bonus.
+      function score({route, pickUp}) {
+        return (pickUp ? 0.5 : 0) - route.length;
+      }
+      route = routes.reduce((a, b) => score(a) > score(b) ? a : b).route;
+    }
+  
+    return {direction: route[0], memory: route.slice(1)};
+  }
+
+compareRobots(yourRobot, [], lazyRobot, []);
