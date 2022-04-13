@@ -1,17 +1,25 @@
 class PGroup {
     constructor() {
         this.members = [];
-        this.empty = new PGroup;
     }
     
       add(value) {
         if (!this.has(value)) {
-          this.empty.members.push(value);
+          let group = new PGroup([]);
+          group.members = this.members.concat([value]);
+          return group;
+        } else {
+          let group = new PGroup([]);
+          group.members = this.members;
+          return group;
         }
     }
     
       delete(value) {
-        this.members = this.members.filter(v => v !== value);
+        let newMembers = this.members.filter(v => v !== value);
+        let group = new PGroup([]);
+        group.members = newMembers;
+        return group;
     }
     
       has(value) {
@@ -34,9 +42,11 @@ PGroup.empty = new PGroup([]);
 // let a = PGroup.empty;
 // console.log(a);
 let a = PGroup.empty.add("a");
+
 let ab = a.add("b");
 let b = ab.delete("a");
-/* let a = PGroup.empty.add("a");
+
+console.log(PGroup.empty);
 
   console.log(b.has("b"));
   // → true
