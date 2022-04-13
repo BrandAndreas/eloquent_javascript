@@ -16,3 +16,26 @@ console.log(/\d/.exec("100"));
 console.log(/\d{1,2}/.exec("100"));
 console.log(/(\d{1,2})/.exec("100")); // [ "10", "10" ]
 console.log(/(\d{1,2})-(\d{1,2})/.exec("100-10")); // [ "00-10", "00", "10" ]
+
+console.log(/\bm/.exec("moon")); // [m]
+console.log(/\bm/.exec("1moon")); // null
+console.log(/on\b/.exec("moon")); // [ "on" ]
+console.log(/oo\b/.exec("moon")); // null
+
+let animalCount = /\b\d+ (pig|cow|chicken)s?\b/;
+console.log(animalCount.test("15 pigs")); // true
+
+
+console.log("papa".replace("p", "m")); // mapa
+console.log("papa".replace(/p/g, "m")); // mama
+
+
+console.log(
+    "Liskov, Barbara\nMcCarthy, John\nWadler, Philip"
+    .replace(/(\w+), (\w+)/g, "$2 $1")
+);
+/* Barbara Liskov
+John McCarthy
+Philip Wadler */
+
+let s = 
