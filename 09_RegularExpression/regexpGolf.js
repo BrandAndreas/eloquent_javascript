@@ -1,30 +1,30 @@
 // Fill in the regular expressions
 
-verify(/.../,
+verify(/ca[rt]/,
     ["my car", "bad cats"],
     ["camper", "high art"]);
 
-verify(/.../,
+verify(/pr?o/,
     ["pop culture", "mad props"],
     ["plop", "prrrop"]);
 
-verify(/.../,
+verify(/rr[eya]/,
     ["ferret", "ferry", "ferrari"],
     ["ferrum", "transfer A"]);
 
-verify(/.../,
+verify(/ious\b/,
     ["how delicious", "spacious room"],
     ["ruinous", "consciousness"]);
 
-verify(/.../,
+verify(/ (\.)/,
     ["bad punctuation ."],
     ["escape the period"]);
 
-verify(/.../,
+verify(/\w{6}/,
     ["Siebentausenddreihundertzweiundzwanzig"],
     ["no", "three small words"]);
 
-verify(/.../,
+verify(/\b[^\We]+\b/i,
     ["red platypus", "wobbling nest"],
     ["earth bed", "learning ape", "BEET"]);
 
