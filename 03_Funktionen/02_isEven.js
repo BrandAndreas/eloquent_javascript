@@ -1,13 +1,16 @@
 function isEven(num) {
-    console.log(typeof num);
     if(num === 0) {
         return true;
     }
     if(num === 1) {
+        console.log('Ich bin hier drin');
         return false;
     }
 
-    isEven(num-2);
+    if(num > 1) {
+        isEven(num-2);
+    }
+
 }
 
 console.log(isEven(5))
