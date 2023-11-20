@@ -3,14 +3,10 @@ function isEven(num) {
         return true;
     }
     if(num === 1) {
-        console.log('Ich bin hier drin');
         return false;
     }
 
-    if(num > 1) {
-        isEven(num-2);
-    }
-
+    return isEven(num-2);
 }
 
-console.log(isEven(5))
+console.log(isEven(667))
