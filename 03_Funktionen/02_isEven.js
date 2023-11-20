@@ -9,4 +9,4 @@ function isEven(num) {
     return isEven(num-2);
 }
 
-console.log(isEven(667))
+console.log(isEven(4))
