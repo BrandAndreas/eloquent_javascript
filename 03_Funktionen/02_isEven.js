@@ -1,12 +1,9 @@
 function isEven(num) {
-    if(num === 0) {
-        return true;
-    }
-    if(num === 1) {
-        return false;
+    if(Math.abs(num)>1) {
+        return isEven(Math.abs(num)-2);
     }
 
-    return isEven(num-2);
+    return num === 0;
 }
 
-console.log(isEven(4))
+console.log(isEven(-23))
