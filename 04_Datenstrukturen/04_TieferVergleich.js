@@ -11,11 +11,12 @@ function deepEqual(obj1, obj2) {
                     if(deepEqual(currentItem1, currentItem2) === false) {
                         return false;
                     }
-                }
-                if(currentItem1 === currentItem2) {
-                    continue;
                 } else {
-                    return false;
+                    if(currentItem1 === currentItem2) {
+                        continue;
+                    } else {
+                        return false;
+                    }
                 }
             } else {
                 return false;
@@ -27,20 +28,24 @@ function deepEqual(obj1, obj2) {
     return true;    
 }
 
+
 const newObj = {
     a : 2,
     c : {
         help: 'String'
     },
+    d : [1,2,3],
     nope : null
 }
 
 const oldObj = {
-    a : 3,
+    a : 2,
     c : {
         help: 'String'
     },
+    d : [1,2,3],
     nope : null
 }
 
-console.log(deepEqual(newObj,oldObj));
+console.log(deepEqual(newObj, oldObj));
+console.log(deepEqual('Help', 'Hel'));
