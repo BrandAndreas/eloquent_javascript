@@ -4,8 +4,19 @@ function deepEqual(obj1, obj2) {
 
     if(props1.length === props2.length) {
         for(let i=0; i<props1.length; i++) {
+            const currentItem1 = obj1[props1[i]];
+            const currentItem2 = obj2[props2[i]];
             if(props1[i] === props2[i]) {
-                if(obj1[props1[i]] === obj2[props2[i]] && obj)
+                if(typeof currentItem1 === 'object' && currentItem1 !== null) {
+                    if(deepEqual(currentItem1, currentItem2) === false) {
+                        return false;
+                    }
+                }
+                if(currentItem1 === currentItem2) {
+                    continue;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -13,25 +24,23 @@ function deepEqual(obj1, obj2) {
     } else  {
         return false;
     }
-    
-    
-    for(prop of Object.keys(obj)) {
-        obj[prop]
-    }
+    return true;    
 }
 
 const newObj = {
     a : 2,
-    valueA : function() {
-        console.log(this.a);
+    c : {
+        help: 'String'
     },
     nope : null
 }
 
-console.log(null === null);
-console.log(3 === null);
-console.log(typeof null);
-console.log([0,1] == [0,1]);
-// console.log(newObj.a);
-newObj.valueA();
-console.log(Object.keys(newObj));
+const oldObj = {
+    a : 3,
+    c : {
+        help: 'String'
+    },
+    nope : null
+}
+
+console.log(deepEqual(newObj,oldObj));
