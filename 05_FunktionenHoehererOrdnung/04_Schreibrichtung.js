@@ -40,4 +40,38 @@ console.log(dominantDirection("Hello!"));
 console.log(dominantDirection("Hey, مساء الخير"));
 // → rtl
 */
-console.log(characterScript("Hello!"));
+
+function textScripts(text) {
+    let scripts = countBy(text, char => {
+        let script = characterScript(char.codePointAt(0));
+        return script ? script.name : "none";
+    }).filter(({name}) => name != "none");
+
+    let total = scripts.reduce((n, {count}) => n + count, 0);
+    if(total == 0) return "No Scripts found";
+
+
+    return scripts.map(({name, count}) => {
+        return `${Math.round(count + 100 / total)}% ${name}`;
+    }).join(", ");
+}
+
+console.log(textScripts('Hey, مساء الخير"'));
+
+
+function textDirections(text) {
+    let scripts = countBy(text, char => {
+        let script = characterScript(char.codePointAt(0));
+        return script ? script.direction : "none";
+    }).filter(({direction}) => direction != "none");
+
+    let total = scripts.reduce((n, {count}) => n + count, 0);
+    if(total == 0) return "No Scripts found";
+
+
+    return scripts.map(({name, count}) => {
+        return `${Math.round(count + 100 / total)}% ${name}`;
+    }).join(", ");
+}
+
+console.log(textDirections('kkkkHey, مساء الخير"'));
