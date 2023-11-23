@@ -19,12 +19,35 @@ function arrayToList(arr) {
 
 function listToArray(list) {
     let arr = [];
-    
+    function getValues(list) {
+        arr.push(list.value);
+        if(list.rest !== null) {
+            getValues(list.rest);
+        }
+        return arr;
+    }
+    getValues(list);
+    return arr;
+}
+
+function prepend(element, list) {
+    // Ein Element an die erste Stelle anfügen
+    return {value: element, rest: list};
+}
+
+function nth(element, list, position) {
+    let arr = listToArray(list);
+    arr.splice(position, 0, element);
+    return arrayToList(arr);
 }
 
 const newList = arrayToList([1,2,3]);
-console.log(newList);
-console.log(newList.value);
-console.log(newList.rest.value);
-console.log(newList.rest.rest.value);
-console.log(newList.rest.rest.rest.value);
+console.log(JSON.stringify(newList));
+
+console.log(listToArray(newList));
+
+const prependList = prepend(0, newList);
+console.log(JSON.stringify(prependList));
+
+const nthList = nth(5, prependList, 2);
+console.log(JSON.stringify(nthList));
