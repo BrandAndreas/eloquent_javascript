@@ -20,7 +20,7 @@ function countBy(items, groupName) {
         let name = groupName(item);
         let known = counts.findIndex(c => c.name == name);
         if (known == -1) {
-            counts.push({name, count: 1});
+            counts.push({ name, count: 1 });
         } else {
             counts[known].count++;
         }
@@ -28,13 +28,16 @@ function countBy(items, groupName) {
     return counts;
 }
 
-console.log(JSON.stringify(countBy([1,2,3,4,5], n => n > 2)));
+console.log(JSON.stringify(countBy([1, 2, 3, 4, 5], n => n > 2)));
 
-function(dominatDirection(text)) {
-
-}
+/* function(dominatDirection(text)) {
+    // Vorherrschende Schreibrichtung in einem String ermitteln.
+    // script.direction
+} 
 
 console.log(dominantDirection("Hello!"));
 // → ltr
 console.log(dominantDirection("Hey, مساء الخير"));
 // → rtl
+*/
+console.log(characterScript("Hello!"));
