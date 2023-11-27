@@ -39,9 +39,9 @@ class VillageState {
             return this;
         } else {
             let parcels = this.parcels.map(p => {
-                if (p.place != this.place) return p;
-                return {place: destination, address: p.address};
-            }).filter(p => p.place != p.address);
+                if (p.place != this.place) return p; // Wenn der Ort des Paketes nicht dem Ort dieses Objektes entspricht gib einfach das Paket zurück
+                return {place: destination, address: p.address};  // Gib dem Paket als Ort das Ziel und die Adresse bleibt die Gleiche
+            }).filter(p => p.place != p.address); // filter die Pakete heraus, dessen Adressen nicht mit dem Ort übereinstimmen
             return new VillageState(destination, parcels);
         }
     }
