@@ -26,23 +26,46 @@ function buildGraph(edges) {
 
 const roadGraph = buildGraph(roads);
 
-console.log(JSON.stringify(roadGraph));
+// console.log(JSON.stringify(roadGraph));
 
 class VillageState {
     constructor (place, parcels) {
-        this.place = place;
-        this.parcels = parcels;
+        this.place = place; // "Post Office"
+        this.parcels = parcels; // [{place: "Post Office", address: "Alice's House"}]
     }
 
-    move(destination) {
+    move(destination) { // destination = "Alice's House"
         if(!roadGraph[this.place].includes(destination)) {
             return this;
         } else {
             let parcels = this.parcels.map(p => {
-                if (p.place != this.place) return p; // Wenn der Ort des Paketes nicht dem Ort dieses Objektes entspricht gib einfach das Paket zurück
+                if (p.place != this.place) return p; // Wenn der Ort des Paketes nicht dem Ort dieses Objektes entspricht gib einfach das Paket zurück, das bedeutet, dass Paket wurde noch nicht aufgesammelt.
                 return {place: destination, address: p.address};  // Gib dem Paket als Ort das Ziel und die Adresse bleibt die Gleiche
-            }).filter(p => p.place != p.address); // filter die Pakete heraus, dessen Adressen nicht mit dem Ort übereinstimmen
+            }).filter(p => p.place != p.address); // filter die Pakete heraus, dessen Adressen nicht mit dem Ort übereinstimmen. Das heißt, lass die angekommenen Pakete liegen
             return new VillageState(destination, parcels);
         }
     }
 }
+
+/* let first = new VillageState(
+    "Post Office",
+    [{place: "Post Office", address: "Alice's House"}]
+);
+let next = first.move("Alice's House");
+console.log(next.place);
+console.log(next.parcels);
+console.log(first.place); */
+
+function runRobot(state, robot, memory) {
+    for (let turn = 0;; turn++) {
+        if (state.parcels.length == 0) {
+            console.log(`Done in ${turn} turns`);
+            break;
+        }
+        let action = robot(state, memory);
+        state = state.move(action.direction);
+        memory = action.memory;
+        console.log(`Moved to ${action.direction}`);
+    }
+}
+

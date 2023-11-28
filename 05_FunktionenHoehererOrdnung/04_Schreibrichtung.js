@@ -71,4 +71,4 @@ function textDirections(text) {
 }
 
 console.log(textDirections('kkkkHey, مساء الخير"'));
-console.log(textDirections('Hddddd         dd, مساء الخير"'));
+console.log(textDirections('Hddddd asdfasdf  dd, مساء الخير"'));
