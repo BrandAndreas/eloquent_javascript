@@ -14,6 +14,15 @@ function findRoute(graph, from, to) {
     }
 }
 
+/* 
+IDEE:
+Schau dir erst alle places der Pakete an. Geh zu dem, dass am nächsten ist. Kicke dieses Ziel aus der Liste.
+Dann packe das Ziel dieses Paketes in die Liste und vergleiche, ob diese Adresse oder die places der übrigen Pakete am nächsten ist.
+Gehe dann zum nächsten Ziel und fahre weiter so fort.
+
+findShortestRoute(graph, from, to)
+*/
+
 function goalOrientedRobot({place, parcels}, route) {
     if (!route || route.length == 0) {
         let parcel = parcels[0]; // Das parcel ist das erste Paket der Pakete
@@ -27,5 +36,5 @@ function goalOrientedRobot({place, parcels}, route) {
 }
 
 function bestRobot({place, parcels}, route) {
-    
+
 }
