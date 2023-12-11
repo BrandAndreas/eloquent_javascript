@@ -1,5 +1,6 @@
 class Group {
     
+    
     constructor () {
         this.values = [];
     }
